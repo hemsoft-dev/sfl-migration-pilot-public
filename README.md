@@ -2,31 +2,31 @@
 
 Disposable [organization rollout validation](https://github.com/hemsoft-dev/set-it-free-loop/issues/139), outside the original source inventory; no production data.
 
-The reviewer package is pinned to canonical release `v2.1.0-rc.26`, source `afdf3bca1631b98ad87b9aa96ed87d455917e63b`. It uses connected Codex without an SFL App key or model credential.
+The reviewer package is pinned to canonical release `v2.1.0-rc.27`, source `05e71cfb6d433a95764e4bf695db9c09c3779bc3`. It uses connected Codex without an SFL App key or model credential.
 
-After this package upgrade merges, a separate documentation PR exercises a registered current-head review with rc26 installed on the default branch. Its successful gate must bind the exact head, base, human request and authenticated Codex artifact. Repeat init/sync must create no changes. Gate cleanup must preserve ownership files, labels and unrelated policy.
+After this package upgrade merges, a separate documentation PR exercises a registered current-head review with rc27 installed on the default branch. Its successful gate must bind the exact head, base, human request and authenticated Codex artifact. Repeat init/sync must create no changes. Gate cleanup must preserve ownership files, labels and unrelated policy.
 
 Overlapping registered requests stay blocked on the same head because native artifacts cannot identify which request produced them. Advance the PR head, then register one fresh review. Requests and artifacts from the previous head cannot satisfy that new review.
 
-## rc26 overlapping review protection
+## rc27 overlapping review protection
 
-The installed reviewer is pinned to immutable SFL rc26. A newer registered review request supersedes older results, including overlapping requests that cannot be attributed safely on the same head. Advance the PR head before registering one fresh review after overlap.
+The installed reviewer is pinned to immutable SFL rc27. A newer registered review request supersedes older results, including overlapping requests that cannot be attributed safely on the same head. Advance the PR head before registering one fresh review after overlap.
 
 This update exercises the observer installed on the current default branch with a registered current-head review and the Actions-owned required gate. Synthetic negative fixtures remain separate evidence from this live review.
 
 Native reviews identify their head but not their originating base. The observer requires one trusted opened or head-change context for that PR and base. Base edits, reopened PRs, legacy context records, and multiple contexts on one head require advancing the branch to a new head before registering a fresh review. This prevents late automatic or unregistered old-base reviews from approving the current diff.
 
-## rc26 native base-context validation
+## rc27 native base-context validation
 
 The installed observer stores trusted PR number, event action and base SHA in check output while retaining a compact context token for request and result IDs. A single fresh opened or head-change context can approve this diff. Legacy records, base edits, reopened PRs and multiple contexts on a head remain blocked until the branch advances.
 
-This documentation change verifies the installed rc26 observer using one registered human request and the actual Actions-owned required gate. The separate synthetic fixture receipts test negative contexts and API identifier length; they do not claim live provider events.
+This documentation change verifies the installed rc27 observer using one registered human request and the actual Actions-owned required gate. The separate synthetic fixture receipts test negative contexts and API identifier length; they do not claim live provider events.
 
 Registered requests are evaluated against their immediate predecessor, including rejected overlaps. If a request overlaps an unfinished review, advance the branch before registering a new request. Terminal serial requests remain eligible. Both authenticated clean review wordings are accepted; malformed context provenance fails with recovery instructions.
 
-## rc26 immediate predecessor runtime verification
+## rc27 immediate predecessor runtime verification
 
-The installed reviewer is pinned to immutable SFL rc26. Every registered request must follow its immediate predecessor after terminal completion. An unresolved overlapping request blocks all later requests on that head, including a third request after the first completes. Advance the PR head before registering one fresh review after overlap.
+The installed reviewer is pinned to immutable SFL rc27. Every registered request must follow its immediate predecessor after terminal completion. An unresolved overlapping request blocks all later requests on that head, including a third request after the first completes. Advance the PR head before registering one fresh review after overlap.
 
 This update exercises the observer installed on the current default branch with a registered current-head review and the Actions-owned required gate. Synthetic negative fixtures remain separate evidence from this live review.
 
@@ -37,3 +37,5 @@ Deleted historical registrations block every final publication snapshot. Issue-c
 Registered authors may invalidate their earlier review after access is revoked. Ordinary comments do not block registered review publication. Retargeting between non-default branches remains outside reviewer admission.
 
 Authorized request-marker runs serialize review publication while their registration materializes. Denied authors get one historical registration lookup without retry waits. Ordinary comment runs require an actual matching registration to block publication.
+
+Registered request contexts must be nonempty opaque tokens. Successful required-status repairs recheck history before and after the write; verification errors restore a blocking status with bounded retries and preserve the original failure.
