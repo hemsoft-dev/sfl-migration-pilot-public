@@ -41,3 +41,9 @@ Authorized request-marker runs serialize review publication while their registra
 Registered request contexts must be nonempty opaque tokens. Successful required-status repairs recheck history before and after the write; verification errors restore a blocking status with bounded retries and preserve the original failure.
 
 Registry-free marker runs require an authenticated exact, unchanged request for the current head and base. Marker quotations and ordinary comments cannot block publication; genuine fresh requests still serialize while the registry materializes.
+
+## rc28 request-history and marker admission runtime verification
+
+This update exercises the observer installed on the current default branch through one registered current-head review and its Actions-owned required gate. Synthetic negative fixtures remain separate from this live event.
+
+Registry-free marker runs must match an authenticated, unchanged current request before they block publication. Marker quotations and ordinary comments cannot block a valid result; genuine fresh requests still serialize until their registry materializes. Registered revocation and verification-error blocking remain enforced.
