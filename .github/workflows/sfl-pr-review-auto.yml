@@ -1,8 +1,8 @@
-# Deployed from: HemSoft/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@b6e09ab11d6d5ab1e4403dd4c24630b6df6c1756
+# Deployed from: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@4d714b3fe2c153288a4c055e69be2fee9e5b5e36
 # To upgrade: re-run deploy-workflow.ps1 at the desired SHA
 # Deployed from HemSoft/set-it-free-loop. The deployment command replaces this
 # source pin with the immutable source SHA.
-# Source: HemSoft/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@b6e09ab11d6d5ab1e4403dd4c24630b6df6c1756
+# Source: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@4d714b3fe2c153288a4c055e69be2fee9e5b5e36
 name: SFL Codex Review Observer
 run-name: >-
   ${{ github.event_name == 'issue_comment' &&
@@ -1109,7 +1109,18 @@ jobs:
               completed_at: new Date().toISOString(),
               details_url: detailsURL,
               external_id: externalId,
-              output: {title, summary: result.reason},
+              output: {title, summary: result.reason + "\n\n<!-- sfl-gate-execution:" + Buffer.from(JSON.stringify({
+                repository_id: context.payload.repository.id,
+                repository: `${owner}/${repo}`,
+                run_id: context.runId,
+                run_attempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+                execution_sha: context.sha,
+                workflow_sha: process.env.GITHUB_WORKFLOW_SHA,
+                workflow_path: ".github/workflows/sfl-pr-review-auto.yml",
+                event: context.eventName,
+                check_run_id: published.data.id,
+                external_id: externalId,
+              })).toString("base64") + " -->"},
             });
             await github.rest.repos.createCommitStatus({
               owner,
