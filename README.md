@@ -51,3 +51,9 @@ Registry-free marker runs must match an authenticated, unchanged current request
 ## rc29 chained-retarget protection
 
 Unsupported nondefault retarget events use a separate concurrency group. They cannot cancel a pending or running default-departure invalidation, including a chain that returns to the same nondefault target. Nondefault-to-nondefault admission remains read-only. After this package upgrade, verify the installed production regressions and a separate registered live review.
+
+## rc29 chained-retarget and installed gate runtime verification
+
+This update exercises the observer installed on the current default branch through one registered current-head review and its Actions-owned required gate. Synthetic negative fixtures remain separate from this live event.
+
+Default-target and default-departure events share the supported concurrency bucket. Later unsupported nondefault retargets cannot cancel the pending default-departure invalidation. This live request verifies the installed review-to-gate path; the chained-retarget failure is tested separately by the production expression regression.
