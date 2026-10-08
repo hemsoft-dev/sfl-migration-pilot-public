@@ -1,8 +1,8 @@
-# Deployed from: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@21b4fbc9228cb4e444f6a68fbce66e804bff156d
+# Deployed from: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@197e0d2d7af1b60647e80148a9cfd75f81c95c16
 # To upgrade: re-run deploy-workflow.ps1 at the desired SHA
 # Deployed from HemSoft/set-it-free-loop. The deployment command replaces this
 # source pin with the immutable source SHA.
-# Source: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@21b4fbc9228cb4e444f6a68fbce66e804bff156d
+# Source: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@197e0d2d7af1b60647e80148a9cfd75f81c95c16
 name: SFL Codex Review Observer
 run-name: >-
   ${{ github.event_name == 'issue_comment' &&
@@ -1385,7 +1385,7 @@ jobs:
               }
               const reason = renamedBase
                 ? `Repository default branch changed from deployed SFL review base ${configuredBaseBranch} to ${baseRef}; redeploy SFL before requesting a new Codex review.`
-                : `Pull request base ${baseRef} advanced to ${pull.base.sha}; request a new Codex review with gh sfl review --retry.`;
+                : `Pull request base ${baseRef} advanced to ${pull.base.sha}; update this PR branch from ${baseRef} to a new head, then request a Codex review with gh sfl review --repo ${owner}/${repo} --pr ${pull.number}.`;
               const finalChecks = await github.paginate(
                 github.rest.checks.listForRef,
                 {
