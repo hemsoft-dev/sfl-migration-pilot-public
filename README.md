@@ -15,3 +15,9 @@ The installed reviewer is pinned to immutable SFL rc21. A newer registered revie
 This update exercises the observer installed on the current default branch with a registered current-head review and the Actions-owned required gate. Synthetic negative fixtures remain separate evidence from this live review.
 
 Native reviews identify their head but not their originating base. The observer requires one trusted opened or head-change context for that PR and base. Base edits, reopened PRs, legacy context records, and multiple contexts on one head require advancing the branch to a new head before registering a fresh review. This prevents late automatic or unregistered old-base reviews from approving the current diff.
+
+## rc21 native base-context validation
+
+The installed observer stores trusted PR number, event action and base SHA in check output while retaining a compact context token for request and result IDs. A single fresh opened or head-change context can approve this diff. Legacy records, base edits, reopened PRs and multiple contexts on a head remain blocked until the branch advances.
+
+This documentation change verifies the installed rc21 observer using one registered human request and the actual Actions-owned required gate. The separate synthetic fixture receipts test negative contexts and API identifier length; they do not claim live provider events.
