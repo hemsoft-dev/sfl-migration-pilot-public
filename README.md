@@ -2,9 +2,9 @@
 
 Disposable [organization rollout validation](https://github.com/hemsoft-dev/set-it-free-loop/issues/139), outside the original source inventory; no production data.
 
-The reviewer package is pinned to canonical release `v2.1.0-rc.28`, source `104648b0a9f2709c15d2cfb6c9b7d9dc49e171b3`. It uses connected Codex without an SFL App key or model credential.
+The reviewer package is pinned to canonical release `v2.1.0-rc.29`, source `f07ab8ca3d58a7a5a6bbf88ff1bc8e3a359b6e53`. It uses connected Codex without an SFL App key or model credential.
 
-After this package upgrade merges, a separate documentation PR exercises a registered current-head review with rc28 installed on the default branch. Its successful gate must bind the exact head, base, human request and authenticated Codex artifact. Repeat init/sync must create no changes. Gate cleanup must preserve ownership files, labels and unrelated policy.
+After this package upgrade merges, a separate documentation PR exercises a registered current-head review with rc29 installed on the default branch. Its successful gate must bind the exact head, base, human request and authenticated Codex artifact. Repeat init/sync must create no changes. Gate cleanup must preserve ownership files, labels and unrelated policy.
 
 Overlapping registered requests stay blocked on the same head because native artifacts cannot identify which request produced them. Advance the PR head, then register one fresh review. Requests and artifacts from the previous head cannot satisfy that new review.
 
@@ -47,3 +47,7 @@ Registry-free marker runs require an authenticated exact, unchanged request for 
 This update exercises the observer installed on the current default branch through one registered current-head review and its Actions-owned required gate. Synthetic negative fixtures remain separate from this live event.
 
 Registry-free marker runs must match an authenticated, unchanged current request before they block publication. Marker quotations and ordinary comments cannot block a valid result; genuine fresh requests still serialize until their registry materializes. Registered revocation and verification-error blocking remain enforced.
+
+## rc29 chained-retarget protection
+
+Unsupported nondefault retarget events use a separate concurrency group. They cannot cancel a pending or running default-departure invalidation, including a chain that returns to the same nondefault target. Nondefault-to-nondefault admission remains read-only. After this package upgrade, verify the installed production regressions and a separate registered live review.
