@@ -51,3 +51,17 @@ Registry-free marker runs must match an authenticated, unchanged current request
 ## rc29 chained-retarget protection
 
 Unsupported nondefault retarget events use a separate concurrency group. They cannot cancel a pending or running default-departure invalidation, including a chain that returns to the same nondefault target. Nondefault-to-nondefault admission remains read-only. After this package upgrade, verify the installed production regressions and a separate registered live review.
+
+## rc29 chained-retarget and installed gate runtime verification
+
+This update exercises the observer installed on the current default branch through one registered current-head review and its Actions-owned required gate. Synthetic negative fixtures remain separate from this live event.
+
+Default-target and default-departure events share the supported concurrency bucket. Later unsupported nondefault retargets cannot cancel the pending default-departure invalidation. This live request verifies the installed review-to-gate path; the chained-retarget failure is tested separately by the production expression regression.
+
+## Recovery after a native provider failure
+
+A terminal native Codex error is not a clean review and may lack the head and request provenance needed for SFL to publish a request-specific terminal result. Keep the gate blocking and retain the failed provider comment. If the signed CLI still reports the request outstanding, do not post another same-head request manually or edit its registration.
+
+Make the required repair or recovery documentation change on the PR branch, then register one review for the new head. Wait for a clean native result and its bound Actions gate. Edited registrations and overlapping requests remain ambiguous on the original head, and credentials or reviewer models should not be changed to disguise a provider failure.
+
+The [original native failure](https://github.com/hemsoft-dev/sfl-migration-pilot-public/pull/17#issuecomment-6069122432) remains recorded. The guarded same-head retry was refused before posting any request; this documentation records the verified recovery route.
