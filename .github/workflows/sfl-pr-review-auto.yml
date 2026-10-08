@@ -1,12 +1,14 @@
-# Deployed from: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@8c53c43a860a0471308f11501352a9f2b43c7efd
+# Deployed from: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@afdf3bca1631b98ad87b9aa96ed87d455917e63b
 # To upgrade: re-run deploy-workflow.ps1 at the desired SHA
 # Deployed from HemSoft/set-it-free-loop. The deployment command replaces this
 # source pin with the immutable source SHA.
-# Source: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@8c53c43a860a0471308f11501352a9f2b43c7efd
+# Source: hemsoft-dev/set-it-free-loop/deployment/infrastructure/sfl-pr-review-auto.yml@afdf3bca1631b98ad87b9aa96ed87d455917e63b
 name: SFL Codex Review Observer
 run-name: >-
   ${{ github.event_name == 'issue_comment' &&
-      format('SFL Codex comment #{0} request {1}', github.event.issue.number, github.event.comment.id) ||
+      format('SFL Codex comment #{0} {1} {2}', github.event.issue.number,
+      contains(github.event.comment.body, '<!-- sfl-codex-review:head=') && 'request' || 'comment',
+      github.event.comment.id) ||
       format('SFL {0} event', github.event_name) }}
 
 on:
@@ -122,7 +124,11 @@ jobs:
             const marker = `<!-- sfl-codex-review:head=${currentHead.toLowerCase()};base=${currentBase.toLowerCase()};context=${contextToken} -->`;
             const targetURL = (comment.data.html_url || "").toLowerCase();
             let registered = false;
-            for (let attempt = 0; attempt < 12 && !registered; attempt += 1) {
+            const initiallyAllowed = await requesterAllowed(comment.data.user && comment.data.user.login);
+            // Current writers can be waiting for the CLI status POST. A denied
+            // author gets one historical lookup so withdrawal remains possible.
+            const registrationAttempts = initiallyAllowed ? 12 : 1;
+            for (let attempt = 0; attempt < registrationAttempts && !registered; attempt += 1) {
               const statuses = await github.paginate(
                 github.rest.repos.listCommitStatusesForRef,
                 {owner, repo, ref: currentHead, per_page: 100},
@@ -145,7 +151,7 @@ jobs:
               if (!registered && ![context.payload.comment.body, comment.data.body].some(
                 body => (body || "").includes("<!-- sfl-codex-review:head="),
               )) break;
-              if (!registered && attempt < 11) {
+              if (!registered && attempt + 1 < registrationAttempts) {
                 await new Promise(resolve => setTimeout(resolve, 5000));
               }
             }
@@ -342,7 +348,7 @@ jobs:
             }
 
             function invalidationRequestCommentId(run, pullNumber) {
-              const match = new RegExp(`^SFL Codex comment #${pullNumber} request ([1-9][0-9]*)$`)
+              const match = new RegExp(`^SFL Codex comment #${pullNumber} (?:request|comment) ([1-9][0-9]*)$`)
                 .exec((run && run.display_title) || "");
               const id = match ? Number(match[1]) : NaN;
               return Number.isSafeInteger(id) ? id : null;
@@ -784,8 +790,15 @@ jobs:
                 // Ignore ordinary comments even from current administrators.
                 // A historically registered author remains entitled to revoke
                 // their evidence, and a current writer may remove that comment.
-                if (registrations.length && (registrations.some(status =>
-                    status.creator.login.toLowerCase() === actor) || await requesterAllowed(actor))) {
+                // The run title preserves marker intent from the event payload,
+                // including a later-erased body. Hold a writer's request before
+                // its CLI registry POST becomes visible. Older rc25 titles lack
+                // this distinction, so their active runs remain conservative.
+                const materializingRequest = run.display_title ===
+                  `SFL Codex comment #${pullNumber} request ${requestId}`;
+                if ((registrations.length && (registrations.some(status =>
+                    status.creator.login.toLowerCase() === actor) || await requesterAllowed(actor))) ||
+                    (materializingRequest && await requesterAllowed(actor))) {
                   authorized.push(run);
                 }
               }
