@@ -23,3 +23,9 @@ The installed observer stores trusted PR number, event action and base SHA in ch
 This documentation change verifies the installed rc22 observer using one registered human request and the actual Actions-owned required gate. The separate synthetic fixture receipts test negative contexts and API identifier length; they do not claim live provider events.
 
 Registered requests are evaluated against their immediate predecessor, including rejected overlaps. If a request overlaps an unfinished review, advance the branch before registering a new request. Terminal serial requests remain eligible. Both authenticated clean review wordings are accepted; malformed context provenance fails with recovery instructions.
+
+## rc22 immediate predecessor runtime verification
+
+The installed reviewer is pinned to immutable SFL rc22. Every registered request must follow its immediate predecessor after terminal completion. An unresolved overlapping request blocks all later requests on that head, including a third request after the first completes. Advance the PR head before registering one fresh review after overlap.
+
+This update exercises the observer installed on the current default branch with a registered current-head review and the Actions-owned required gate. Synthetic negative fixtures remain separate evidence from this live review.
